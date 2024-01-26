@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seleziona Comune, Provincia e Regione</title>
+  <style>
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <label for="regione">Regione:</label>
+  <select id="regione" onchange="popolaProvince()">
+    <option value="">Seleziona Regione</option>
+    <option value="Lombardia">Lombardia</option>
+    <option value="Veneto">Veneto</option>
+  </select>
+
+  <label for="provincia">Provincia:</label>
+  <select id="provincia" onchange="popolaComuni()">
+    <option value="">Seleziona Provincia</option>
+  </select>
+
+  <label for="comune">Comune:</label>
+  <select id="comune">
+    <option value="">Seleziona Comune</option>
+  </select>
+
+  <script>
+    var datiGeografici = {
+      "Lombardia": {
+        "Milano": ["Milano", "Bergamo", "Como"],
+        "Brescia": ["Brescia", "Sirmione", "Desenzano"]
+      },
+      "Veneto": {
+        "Verona": ["Verona", "Bardolino", "Lazise"],
+        "Vicenza": ["Vicenza", "Bassano del Grappa", "Marostica"]
+      }
+    };
+
+    function popolaProvince() {
+      var regioneSelezionata = document.getElementById("regione").value;
+      var provinciaSelect = document.getElementById("provincia");
+
+      provinciaSelect.innerHTML = '<option value="">Seleziona Provincia</option>';
+
+      if (regioneSelezionata !== "") {
+        for (var provincia in datiGeografici[regioneSelezionata]) {
+          var option = document.createElement("option");
+          option.value = provincia;
+          option.text = provincia;
+          provinciaSelect.add(option);
+        }
+      }
+    }
+
+    function popolaComuni() {
+      var regioneSelezionata = document.getElementById("regione").value;
+      var provinciaSelezionata = document.getElementById("provincia").value;
+      var comuneSelect = document.getElementById("comune");
+
+      comuneSelect.innerHTML = '<option value="">Seleziona Comune</option>';
+
+      if (regioneSelezionata !== "" && provinciaSelezionata !== "") {
+        var comuni = datiGeografici[regioneSelezionata][provinciaSelezionata];
+        for (var i = 0; i < comuni.length; i++) {
+          var option = document.createElement("option");
+          option.value = comuni[i];
+          option.text = comuni[i];
+          comuneSelect.add(option);
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
